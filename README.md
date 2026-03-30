@@ -12,7 +12,10 @@ Estudando CS50 SQL e aplicando na prática.
 
 - Schema relacional com 5 tabelas (users, exercises, workouts, workouts_exercises, sets)
 - Banco criado e populado com dados de exemplo
-- Queries de análise em desenvolvimento
+- 8 queries de análise (queries.py)
+- database.py — conexão com SQLite
+- models.py — schemas Pydantic
+- crud.py — funções de leitura e inserção no banco
 
 ## Próximos passos
 

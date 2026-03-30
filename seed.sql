@@ -23,6 +23,7 @@ VALUES
 
 INSERT INTO "sets" ("id_workout_exercise", "weight", "reps")
 VALUES
+('1', '30', '10'),
 ('1', '50', '8'),
 ('1', '60', '6'),
 ('2', '60', '6'),

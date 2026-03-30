@@ -6,7 +6,7 @@ CREATE TABLE "users" (
 
 CREATE TABLE "exercises" (
     "id" INTEGER,
-    "name" TEXT,
+    "name" TEXT UNIQUE,
     PRIMARY KEY("id")
 );
 
