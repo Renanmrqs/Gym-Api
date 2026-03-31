@@ -1,4 +1,5 @@
-from database import get_connection
+from app.database import get_connection
+
 
 # READS:
 
@@ -12,7 +13,17 @@ def get_exercises():
     rows = cur.fetchall()
     return [dict(row) for row in rows]
 
+# busca exercicio filtrando por id
 
+def get_exercises_id(id):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+    SELECT "name" FROM "exercises" 
+    WHERE id = ?
+    """, (id,))
+    rows = cur.fetchall()
+    return [dict(row) for row in rows]
 
 # treinos de um ususario com data
 
@@ -79,15 +90,16 @@ def create_exercise(name):
     conn.commit()
     conn.close()
 
+
 # cria um dia de treino
-def create_workout(user_id, date):
+def create_workout(user_id):
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
-    INSERT INTO "workouts" ("id_user", "datetime")
+    INSERT INTO "workouts" ("id_user")
     VALUES
-    (?, ?);
-    """, (user_id, date))
+    (?);
+    """, (user_id,))
     conn.commit()
     conn.close()
 
@@ -115,4 +127,3 @@ def create_set(workout_exercise_id, weight, reps):
     conn.commit()
     conn.close()
     
-create_set(3, 22, 10)

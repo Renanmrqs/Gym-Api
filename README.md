@@ -16,11 +16,26 @@ Estudando CS50 SQL e aplicando na prática.
 - database.py — conexão com SQLite
 - models.py — schemas Pydantic
 - crud.py — funções de leitura e inserção no banco
+- Rotas FastAPI (exercises, workouts, sets) 
+- Deploy no Railway
 
 ## Próximos passos
 
-- Rotas FastAPI (exercises, workouts, sets)
-- Deploy no Railway
+- criar novas rotas, com crud completo
+- criação de app 100% completo consumindo a api e o banco de dados
+
+## Rotas disponíveis
+
+GET  /health
+GET  /exercises
+GET  /exercises/{id}
+GET  /workout_detail_w_workout/{id_workout}
+GET  /workout_detail_w_user/{id_user}
+
+POST /exercises
+POST /workout
+POST /workout_exercise
+POST /sets
 
 ## Como rodar
 ```bash

@@ -27,7 +27,7 @@ class Users(UsersBase):
 
 class WorkoutsBase(BaseModel):
     id_user: int
-    datetime: str
+    
     
 class WorkoutCreate(WorkoutsBase):
     pass

@@ -14,7 +14,7 @@ CREATE TABLE "exercises" (
 CREATE TABLE "workouts" (
     "id" INTEGER,
     "id_user" INTEGER,
-    "datetime" NUMERIC NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "datetime" NUMERIC DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY ("id"),
     FOREIGN KEY("id_user") REFERENCES "users"("id")
 );
