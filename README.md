@@ -37,8 +37,5 @@ POST /workout
 POST /workout_exercise
 POST /sets
 
-## Como rodar
-```bash
-python create_db.py  # cria o banco
-python seed.py       # popula com dados de exemplo
-```
+## API online
+🔗 https://web-production-7fb8d2.up.railway.app/docs
