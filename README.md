@@ -26,7 +26,7 @@ Estudando CS50 SQL e aplicando na prática.
 
 ## Diagrama do banco de dados
 
-![ERD](file:///C:/Users/renan/Downloads/gym_api_schema.svg)
+![Diagrama](img/diagrama_erd.png)
 
 ## Rotas disponíveis
 
