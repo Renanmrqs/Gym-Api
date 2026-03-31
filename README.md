@@ -24,6 +24,10 @@ Estudando CS50 SQL e aplicando na prática.
 - criar novas rotas, com crud completo
 - criação de app 100% completo consumindo a api e o banco de dados
 
+## Diagrama do banco de dados
+
+![ERD](file:///C:/Users/renan/Downloads/gym_api_schema.svg)
+
 ## Rotas disponíveis
 
 GET  /health
