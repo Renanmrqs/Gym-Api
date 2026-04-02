@@ -3,6 +3,18 @@ from app.database import get_connection
 
 # READS:
 
+def get_historic(name_user):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(""" 
+    SELECT * FROM "workout_summary"
+    WHERE user = ?
+    """, (name_user,))
+    rows = cur.fetchall()
+    return[dict(row) for row in rows]
+
+print(get_historic('Renan'))
+
 # busca todos os exercicios
 def get_exercises():
     conn = get_connection()

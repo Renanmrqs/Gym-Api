@@ -1,6 +1,6 @@
 import sqlite3
 from fastapi import FastAPI, exceptions
-from app.crud import get_exercises, create_exercise, get_workout_detail, get_exercises_id, get_workouts_by_user, create_workout, create_workout_exercise, create_set
+from app.crud import get_exercises, create_exercise, get_workout_detail, get_exercises_id, get_workouts_by_user, create_workout, create_workout_exercise, create_set, get_historic
 from app.models import ExerciseCreate, WorkoutsExercisesCreate, WorkoutCreate, SetsCreate
 
 app = FastAPI()
@@ -33,6 +33,10 @@ def read_workout_detail_user(id_user: int):
     return get_workouts_by_user(id_user)
 
 
+#faz a rota de puxar o historico de sets completo com o nome
+@app.get("/history/{name_user}")
+def read_history_sets_by_user(name_user: str):
+    return get_historic(name_user)
 
 # CREATES
 
@@ -44,7 +48,6 @@ def post_exercise(exercise: ExerciseCreate):
         return {"message": f"exercise {exercise.name} Created"}
     except sqlite3.IntegrityError:
         raise exceptions.HTTPException(status_code=400, detail=f"{exercise.name} already in the table")
-    
 
 # faz a rota de criar treino 
 @app.post("/workout")
