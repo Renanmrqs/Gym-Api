@@ -36,7 +36,10 @@ def read_workout_detail_user(id_user: int):
 #faz a rota de puxar o historico de sets completo com o nome
 @app.get("/history/{name_user}")
 def read_history_sets_by_user(name_user: str):
-    return get_historic(name_user)
+    result = get_historic(name_user)
+    if not result:
+        raise exceptions.HTTPException(status_code=400, detail=f'{name_user} not in table')
+    return result
 
 # CREATES
 
