@@ -1,6 +1,6 @@
 import sqlite3
 from fastapi import FastAPI, exceptions
-from app.crud import get_exercises, create_exercise, get_workout_detail, get_exercises_id, get_workouts_by_user, create_workout, create_workout_exercise, create_set, get_historic
+from app.crud import get_exercises, create_exercise, get_workout_detail, get_exercises_id, get_workouts_by_user, create_workout, create_workout_exercise, create_set, get_historic, get_users
 from app.models import ExerciseCreate, WorkoutsExercisesCreate, WorkoutCreate, SetsCreate
 
 app = FastAPI()
@@ -33,13 +33,18 @@ def read_workout_detail_user(id_user: int):
     return get_workouts_by_user(id_user)
 
 
-#faz a rota de puxar o historico de sets completo com o nome
+# faz a rota de puxar o historico de sets completo com o nome
 @app.get("/history/{name_user}")
 def read_history_sets_by_user(name_user: str):
     result = get_historic(name_user)
     if not result:
         raise exceptions.HTTPException(status_code=400, detail=f'{name_user} not in table')
     return result
+
+# faz a rota de puxar tudo da tabela usuarios 
+@app.get("/users")
+def read_users():
+    return get_users()
 
 # CREATES
 

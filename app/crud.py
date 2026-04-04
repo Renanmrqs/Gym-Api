@@ -3,6 +3,19 @@ from app.database import get_connection
 
 # READS:
 
+# busca todos usuarios e id cadastrado
+
+def get_users():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(""" 
+    SELECT * FROM "users"
+    """) 
+    rows = cur.fetchall()
+    return[dict(row) for row in rows]
+
+
+# buscar o historico pelo nome do usuario
 def get_historic(name_user):
     conn = get_connection()
     cur = conn.cursor()
@@ -13,7 +26,6 @@ def get_historic(name_user):
     rows = cur.fetchall()
     return[dict(row) for row in rows]
 
-print(get_historic('Renan'))
 
 # busca todos os exercicios
 def get_exercises():
