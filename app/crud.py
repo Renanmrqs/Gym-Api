@@ -125,7 +125,9 @@ def create_workout(user_id):
     (?);
     """, (user_id,))
     conn.commit()
+    workout_id = cur.lastrowid
     conn.close()
+    return workout_id
 
 # adiciona um exercicio em um dia de treino
 def create_workout_exercise(workout_id, exercise_id):
