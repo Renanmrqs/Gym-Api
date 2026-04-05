@@ -66,8 +66,8 @@ def post_workout(workout: WorkoutCreate):
 # faz a rota de adicionar exercicio no treino
 @app.post("/workout_exercise")
 def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate):
-    create_workout_exercise(workout_exercise.id_workout, workout_exercise.id_exercise)
-    return {"message": f"Exercise add in workout"}
+    workout_exercise_id = create_workout_exercise(workout_exercise.id_workout, workout_exercise.id_exercise)
+    return {"message": f"Exercise add in workout", "id": workout_exercise_id}
 
 # faz a rota de registrar a série
 @app.post("/sets")

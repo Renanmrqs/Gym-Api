@@ -139,7 +139,9 @@ def create_workout_exercise(workout_id, exercise_id):
     (?, ?);
     """, (workout_id, exercise_id))
     conn.commit()
+    workout_exercise_id = cur.lastrowid
     conn.close()
+    return workout_exercise_id
 
 # adiciona na tabela sets 
 def create_set(workout_exercise_id, weight, reps):
