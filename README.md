@@ -18,11 +18,12 @@ Estudando CS50 SQL e aplicando na prática.
 - crud.py — funções de leitura e inserção no banco
 - Rotas FastAPI (exercises, workouts, sets) 
 - Deploy no Railway
+- Testes com pytest
 
 ## Próximos passos
 
-- criar novas rotas, com crud completo
-- criação de app 100% completo consumindo a api e o banco de dados
+- Autenticação JWT
+- App Streamlit (em desenvolvimento separado)
 
 ## Diagrama do banco de dados
 
@@ -30,16 +31,17 @@ Estudando CS50 SQL e aplicando na prática.
 
 ## Rotas disponíveis
 
-GET  /health
-GET  /exercises
-GET  /exercises/{id}
-GET  /workout_detail_w_workout/{id_workout}
-GET  /workout_detail_w_user/{id_user}
+- GET  /health
+- GET  /exercises
+- GET  /exercises/{id}
+- GET  /workout_detail_w_workout/{id_workout}
+- GET  /workout_detail_w_user/{id_user}
+- GET  /history/{name_user}
 
-POST /exercises
-POST /workout
-POST /workout_exercise
-POST /sets
+- POST /exercises
+- POST /workout
+- POST /workout_exercise
+- POST /sets
 
 ## API online
 🔗 https://web-production-7fb8d2.up.railway.app/docs
