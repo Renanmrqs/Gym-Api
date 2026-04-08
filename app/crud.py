@@ -66,16 +66,6 @@ def get_exercicios_users(name):
     return [dict(row) for row in rows]
 
 
-# busca todos os usuários
-def get_users(): 
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("""
-    SELECT "name" FROM "users"
-    """)
-    rows = cur.fetchall()
-    return [dict(row) for row in rows]
-
 # busca treinos filtrando por usuario
 def get_workouts_by_user(user_id): 
     conn = get_connection()
