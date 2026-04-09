@@ -1,5 +1,5 @@
 import sqlite3
-from fastapi import FastAPI, exceptions
+from fastapi import FastAPI, exceptions, HTTPException
 from app.crud import get_exercises, create_exercise, get_workout_detail, get_exercises_id, get_workouts_by_user, create_workout, create_workout_exercise, create_set, get_historic, get_users
 from app.models import ExerciseCreate, WorkoutsExercisesCreate, WorkoutCreate, SetsCreate
 
@@ -55,7 +55,7 @@ def post_exercise(exercise: ExerciseCreate):
         create_exercise(exercise.name)
         return {"message": f"exercise {exercise.name} Created"}
     except sqlite3.IntegrityError:
-        raise exceptions.HTTPException(status_code=400, detail=f"{exercise.name} already in the table")
+        raise HTTPException(status_code=400, detail=f"{exercise.name} already in the table")
 
 # faz a rota de criar treino 
 @app.post("/workout")
@@ -64,7 +64,7 @@ def post_workout(workout: WorkoutCreate):
         workout_id = create_workout(workout.id_user)
         return {"message": "Workout Created", "id": workout_id}
     except sqlite3.IntegrityError:
-        raise exceptions.HTTPException(status_code=400, detail=f'{workout.id_user} not in the table')
+        raise HTTPException(status_code=400, detail=f'{workout.id_user} not in the table')
 
 # faz a rota de adicionar exercicio no treino
 @app.post("/workout_exercise")
@@ -73,7 +73,7 @@ def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate):
         workout_exercise_id = create_workout_exercise(workout_exercise.id_workout, workout_exercise.id_exercise)
         return {"message": "Exercise added in workout", "id": workout_exercise_id}
     except sqlite3.IntegrityError:
-        raise exceptions.HTTPException(status_code=400, detail="Workout or Exercise ID not found, or already added.")
+        raise HTTPException(status_code=400, detail="Workout or Exercise ID not found, or already added.")
 
 # faz a rota de registrar a série
 @app.post("/sets")
@@ -82,4 +82,4 @@ def post_sets(sets: SetsCreate):
         create_set(sets.id_workout_exercise, sets.weight, sets.reps)
         return {"message": f"Exercise add weight: {sets.weight} | reps: {sets.reps}"}
     except sqlite3.IntegrityError:
-        raise exceptions.HTTPException(status_code=400, detail=f'{sets.id_workout_exercise} not in the table')
+        raise HTTPException(status_code=400, detail=f'{sets.id_workout_exercise} not in the table')
