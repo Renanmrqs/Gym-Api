@@ -61,8 +61,8 @@ def post_exercise(exercise: ExerciseCreate):
 @app.post("/workout")
 def post_workout(workout: WorkoutCreate):
     try:
-        create_workout(workout.id_user)
-        return {"message": "Workout Created", "id": workout.id_user}
+        id = create_workout(workout.id_user)
+        return {"message": "Workout Created", "id": id}
     except sqlite3.IntegrityError:
         raise exceptions.HTTPException(status_code=400, detail=f'{workout.id_user} not in the table')
     
