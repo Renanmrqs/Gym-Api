@@ -72,7 +72,7 @@ def post_workout(workout: WorkoutCreate):
 def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate):
     try:
         create_workout_exercise(workout_exercise.id_workout, workout_exercise.id_exercise)
-        return {"message": f"Exercise add in workout", "id": workout_exercise.id}
+        return {"message": f"Exercise add in workout", "id_workout": workout_exercise.id_workout, 'id_exercise': workout_exercise.id_exercise}
     except sqlite3.IntegrityError:
         raise exceptions.HTTPException(status_code=400, detail=f'{workout_exercise} not in the table')
 
