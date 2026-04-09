@@ -61,20 +61,19 @@ def post_exercise(exercise: ExerciseCreate):
 @app.post("/workout")
 def post_workout(workout: WorkoutCreate):
     try:
-        id = create_workout(workout.id_user)
-        return {"message": "Workout Created", "id": id}
+        workout_id = create_workout(workout.id_user)
+        return {"message": "Workout Created", "id": workout_id}
     except sqlite3.IntegrityError:
         raise exceptions.HTTPException(status_code=400, detail=f'{workout.id_user} not in the table')
-    
 
 # faz a rota de adicionar exercicio no treino
 @app.post("/workout_exercise")
 def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate):
     try:
-        id = create_workout_exercise(workout_exercise.id_workout, workout_exercise.id_exercise)
-        return {"message": f"Exercise add in workout", "id": id}
+        workout_exercise_id = create_workout_exercise(workout_exercise.id_workout, workout_exercise.id_exercise)
+        return {"message": "Exercise added in workout", "id": workout_exercise_id}
     except sqlite3.IntegrityError:
-        raise exceptions.HTTPException(status_code=400, detail=f'Workout or Exercise ID not found, or already added.')
+        raise exceptions.HTTPException(status_code=400, detail="Workout or Exercise ID not found, or already added.")
 
 # faz a rota de registrar a série
 @app.post("/sets")
