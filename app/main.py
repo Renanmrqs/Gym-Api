@@ -60,17 +60,27 @@ def post_exercise(exercise: ExerciseCreate):
 # faz a rota de criar treino 
 @app.post("/workout")
 def post_workout(workout: WorkoutCreate):
-    workout_id = create_workout(workout.id_user)
-    return {"message": "Workout Created", "id": workout_id}
+    try:
+        create_workout(workout.id_user)
+        return {"message": "Workout Created", "id": workout.id_user}
+    except sqlite3.IntegrityError:
+        raise exceptions.HTTPException(status_code=400, detail=f'{workout.id_user} not in the table')
+    
 
 # faz a rota de adicionar exercicio no treino
 @app.post("/workout_exercise")
 def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate):
-    workout_exercise_id = create_workout_exercise(workout_exercise.id_workout, workout_exercise.id_exercise)
-    return {"message": f"Exercise add in workout", "id": workout_exercise_id}
+    try:
+        create_workout_exercise(workout_exercise.id_workout, workout_exercise.id_exercise)
+        return {"message": f"Exercise add in workout", "id": workout_exercise.id_exercise}
+    except sqlite3.IntegrityError:
+        raise exceptions.HTTPException(status_code=400, detail=f'{workout_exercise.id_workout} or {workout_exercise.id_exercise} not in the table')
 
 # faz a rota de registrar a série
 @app.post("/sets")
 def post_sets(sets: SetsCreate):
-    create_set(sets.id_workout_exercise, sets.weight, sets.reps)
-    return {"message": f"Exercise add weight: {sets.weight} | reps: {sets.reps}"}
+    try:
+        create_set(sets.id_workout_exercise, sets.weight, sets.reps)
+        return {"message": f"Exercise add weight: {sets.weight} | reps: {sets.reps}"}
+    except sqlite3.IntegrityError:
+        raise exceptions.HTTPException(status_code=400, detail=f'{sets.id_workout_exercise} not in the table')
