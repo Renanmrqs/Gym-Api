@@ -12,18 +12,20 @@ Estudando CS50 SQL e aplicando na prática.
 
 - Schema relacional com 5 tabelas (users, exercises, workouts, workouts_exercises, sets)
 - Banco criado e populado com dados de exemplo
+- **Segurança de ponta:** Hashing de senhas com Argon2 (padrão OWASP) e Autenticação via token JWT
+- **Arquitetura modular:** Separação clara de responsabilidades (main, auth, crud, models)
 - 8 queries de análise (queries.py)
-- database.py — conexão com SQLite
+- database.py — conexão segura com SQLite
 - models.py — schemas Pydantic
 - crud.py — funções de leitura e inserção no banco
-- Rotas FastAPI (exercises, workouts, sets) 
-- Deploy no Railway
+- Rotas FastAPI (autenticação, exercises, workouts, sets)
+- Deploy automatizado no Railway (utilizando variáveis de ambiente)
 - Testes com pytest
 
 ## Próximos passos
 
-- Autenticação JWT
-- App Streamlit (em desenvolvimento separado)
+- Proteger as rotas de exercícios/treinos (exigindo o token Bearer no cabeçalho)
+- App Front-end no Streamlit (em desenvolvimento separado)
 
 ## Diagrama do banco de dados
 
@@ -31,6 +33,11 @@ Estudando CS50 SQL e aplicando na prática.
 
 ## Rotas disponíveis
 
+**Autenticação:**
+- POST /register
+- POST /login
+
+**Consultas e Operações:**
 - GET  /health
 - GET  /exercises
 - GET  /exercises/{id}
@@ -42,6 +49,8 @@ Estudando CS50 SQL e aplicando na prática.
 - POST /workout
 - POST /workout_exercise
 - POST /sets
+
+## API online
 
 ## API online
 🔗 https://web-production-7fb8d2.up.railway.app/docs
