@@ -97,11 +97,3 @@ def post_register(register: LoginRequest):
     except sqlite3.IntegrityError:
         raise HTTPException(status_code=400, detail=f'{register.name} already in table')
 
-# # faz a rota de logar
-# @app.post("/login")
-# def post_login(get_users_by_name: LoginRequest):
-#     try:
-#         password = get_users_by_name(password.name)
-#         return {"message": "login ok",}
-#     except sqlite3.InternalErrorr:
-#         raise HTTPException(status_code=400, detail="Login error")
