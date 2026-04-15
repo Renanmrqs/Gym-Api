@@ -1,5 +1,5 @@
 from app.database import get_connection
-
+from app.auth import pwd_context
 
 # READS:
 
@@ -167,6 +167,5 @@ def create_register(name, password):
     """, (name, password))
     conn.commit()
     conn.close()
-
-
+    
 

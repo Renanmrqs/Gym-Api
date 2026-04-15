@@ -2,7 +2,7 @@ import sqlite3
 from fastapi import FastAPI, exceptions, HTTPException
 from app.crud import get_exercises, create_exercise, get_workout_detail, get_exercises_id, get_workouts_by_user, create_workout, create_workout_exercise, create_set, get_historic, get_users, get_users_by_name, create_register
 from app.models import ExerciseCreate, WorkoutsExercisesCreate, WorkoutCreate, SetsCreate, LoginRequest
-from app.auth import pwd_context
+from app.auth import pwd_context, generate_token
 
 app = FastAPI()
 
@@ -85,7 +85,9 @@ def post_sets(sets: SetsCreate):
     except sqlite3.IntegrityError:
         raise HTTPException(status_code=400, detail=f'{sets.id_workout_exercise} not in the table')
 
-#faz a rota de criar o registro    
+
+#####registro de usuario
+##faz a rota de criar o registro    
 @app.post("/register")
 def post_register(register: LoginRequest):
     try:
@@ -96,4 +98,19 @@ def post_register(register: LoginRequest):
         return {"message": f"user {register.name} registred"}
     except sqlite3.IntegrityError:
         raise HTTPException(status_code=400, detail=f'{register.name} already in table')
+
+# faz rota do usuario logar na aplicacao
+@app.post("/login")
+def post_login(login: LoginRequest):
+    login_return = get_users_by_name(login.name)
+    if not login_return:
+        raise exceptions.HTTPException(status_code=400, detail=f'{login.name} is not registred')
+    
+    password_corrrect = pwd_context.verify(login.password, login_return["password"])
+    if password_corrrect == False:
+        raise exceptions.HTTPException(status_code=400, detail=f'incorrect password, try again.')
+    
+    token = generate_token(login.name)
+    
+    return {"acess_token": token, "token_type": "bearer"}
 
