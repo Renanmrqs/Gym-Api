@@ -1,7 +1,8 @@
 import sqlite3
 from fastapi import FastAPI, exceptions, HTTPException
-from app.crud import get_exercises, create_exercise, get_workout_detail, get_exercises_id, get_workouts_by_user, create_workout, create_workout_exercise, create_set, get_historic, get_users
-from app.models import ExerciseCreate, WorkoutsExercisesCreate, WorkoutCreate, SetsCreate
+from app.crud import get_exercises, create_exercise, get_workout_detail, get_exercises_id, get_workouts_by_user, create_workout, create_workout_exercise, create_set, get_historic, get_users, get_users_by_name, create_register
+from app.models import ExerciseCreate, WorkoutsExercisesCreate, WorkoutCreate, SetsCreate, LoginRequest
+from app.auth import pwd_context
 
 app = FastAPI()
 
@@ -83,3 +84,24 @@ def post_sets(sets: SetsCreate):
         return {"message": f"Exercise add weight: {sets.weight} | reps: {sets.reps}"}
     except sqlite3.IntegrityError:
         raise HTTPException(status_code=400, detail=f'{sets.id_workout_exercise} not in the table')
+
+#faz a rota de criar o registro    
+@app.post("/register")
+def post_register(register: LoginRequest):
+    try:
+        password_criptografed = pwd_context.hash(register.password)
+
+        create_register(register.name, password_criptografed)
+        
+        return {"message": f"user {register.name} registred"}
+    except sqlite3.IntegrityError:
+        raise HTTPException(status_code=400, detail=f'{register.name} already in table')
+
+# # faz a rota de logar
+# @app.post("/login")
+# def post_login(get_users_by_name: LoginRequest):
+#     try:
+#         password = get_users_by_name(password.name)
+#         return {"message": "login ok",}
+#     except sqlite3.InternalErrorr:
+#         raise HTTPException(status_code=400, detail="Login error")

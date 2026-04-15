@@ -1,7 +1,7 @@
-INSERT INTO "users" ("name")
+INSERT INTO "users" ("name", "password")
 VALUES 
-('Renan'),
-('Joaquim');
+('Renan', 'Avaiafc0@'),
+('Joaquim', 'joao9071');
 
 INSERT INTO "exercises" ("name")
 VALUES 

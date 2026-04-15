@@ -14,6 +14,17 @@ def get_users():
     rows = cur.fetchall()
     return[dict(row) for row in rows]
 
+# busca usuario especifico atraves do nome
+def get_users_by_name(name):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(""" 
+    SELECT * FROM "users"
+    WHERE name = ?  
+    """, (name,)) 
+    row = cur.fetchone()
+    return dict(row) if row else None
+
 
 # buscar o historico pelo nome do usuario
 def get_historic(name_user):
@@ -145,3 +156,17 @@ def create_set(workout_exercise_id, weight, reps):
     conn.commit()
     conn.close()
     
+# adiciona um user na tabela user
+def create_register(name, password):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+    INSERT INTO "users" ("name", "password")
+    VALUES
+    (?, ?);
+    """, (name, password))
+    conn.commit()
+    conn.close()
+
+
+

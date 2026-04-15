@@ -16,12 +16,17 @@ class Exercise(ExerciseBase):
 
 class UsersBase(BaseModel):
     name: str
-    
+    password: str
 class UsersCreate(UsersBase):
     pass
 
 class Users(UsersBase):
     id: int
+
+
+class LoginRequest(BaseModel):
+    name: str
+    password: str
 
 # DB WORKOUTS
 

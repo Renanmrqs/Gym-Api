@@ -1,6 +1,7 @@
 CREATE TABLE "users" (
     "id" INTEGER,
-    "name" TEXT,
+    "name" TEXT UNIQUE NOT NULL,
+    "password" TEXT NOT NULL,
     PRIMARY KEY("id")
 );
 
