@@ -1,10 +1,15 @@
 import sqlite3
-from fastapi import FastAPI, exceptions, HTTPException
+from fastapi import FastAPI, exceptions, HTTPException, security, Depends
 from app.crud import get_exercises, create_exercise, get_workout_detail, get_exercises_id, get_workouts_by_user, create_workout, create_workout_exercise, create_set, get_historic, get_users, get_users_by_name, create_register
 from app.models import ExerciseCreate, WorkoutsExercisesCreate, WorkoutCreate, SetsCreate, LoginRequest
-from app.auth import pwd_context, generate_token
+from app.auth import pwd_context, generate_token, verify_token
 
 app = FastAPI()
+
+security_rote = security.OAuth2PasswordBearer(tokenUrl="login")
+def get_current_user(token: str = Depends(security_rote)):
+    user  = verify_token(token)
+    return user
 
 # READS
 # cria a rota padrao
@@ -48,19 +53,18 @@ def read_users():
     return get_users()
 
 # CREATES
-
 # faz a rota de adicionar exercicio na tabela exercicios
 @app.post("/exercises")
-def post_exercise(exercise: ExerciseCreate):
+def post_exercise(exercise: ExerciseCreate, user: str = Depends(get_current_user)):
     try:
         create_exercise(exercise.name)
-        return {"message": f"exercise {exercise.name} Created"}
+        return {"message": f"exercise {exercise.name} Created by {user}"}
     except sqlite3.IntegrityError:
         raise HTTPException(status_code=400, detail=f"{exercise.name} already in the table")
 
 # faz a rota de criar treino 
 @app.post("/workout")
-def post_workout(workout: WorkoutCreate):
+def post_workout(workout: WorkoutCreate, user: str = Depends(get_current_user)):
     try:
         workout_id = create_workout(workout.id_user)
         return {"message": "Workout Created", "id": workout_id}
@@ -69,7 +73,7 @@ def post_workout(workout: WorkoutCreate):
 
 # faz a rota de adicionar exercicio no treino
 @app.post("/workout_exercise")
-def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate):
+def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate, user: str = Depends(get_current_user)):
     try:
         workout_exercise_id = create_workout_exercise(workout_exercise.id_workout, workout_exercise.id_exercise)
         return {"message": "Exercise added in workout", "id": workout_exercise_id}
@@ -78,7 +82,7 @@ def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate):
 
 # faz a rota de registrar a série
 @app.post("/sets")
-def post_sets(sets: SetsCreate):
+def post_sets(sets: SetsCreate, user: str = Depends(get_current_user)):
     try:
         create_set(sets.id_workout_exercise, sets.weight, sets.reps)
         return {"message": f"Exercise add weight: {sets.weight} | reps: {sets.reps}"}
@@ -101,16 +105,16 @@ def post_register(register: LoginRequest):
 
 # faz rota do usuario logar na aplicacao
 @app.post("/login")
-def post_login(login: LoginRequest):
-    login_return = get_users_by_name(login.name)
+def post_login(form_data: security.OAuth2PasswordRequestForm = Depends()):
+    login_return = get_users_by_name(form_data.username)
     if not login_return:
-        raise exceptions.HTTPException(status_code=400, detail=f'{login.name} is not registred')
+        raise exceptions.HTTPException(status_code=400, detail=f'{form_data.username} is not registred')
     
-    password_corrrect = pwd_context.verify(login.password, login_return["password"])
+    password_corrrect = pwd_context.verify(form_data.password, login_return["password"])
     if password_corrrect == False:
         raise exceptions.HTTPException(status_code=400, detail=f'incorrect password, try again.')
     
-    token = generate_token(login.name)
+    token = generate_token(form_data.username)
     
-    return {"acess_token": token, "token_type": "bearer"}
+    return {"access_token": token, "token_type": "bearer"}
 
