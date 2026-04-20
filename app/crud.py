@@ -106,55 +106,63 @@ def get_workout_detail(workout_id):
 # adiciona na tabela exercicios
 def create_exercise(name):
     conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("""
-    INSERT INTO "exercises" ("name")
-    VALUES
-    (?);
-    """, (name,))
-    conn.commit()
-    conn.close()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+        INSERT INTO "exercises" ("name")
+        VALUES
+        (?);
+        """, (name,))
+        conn.commit()
+    finally:
+        conn.close()
 
 
 # cria um dia de treino
 def create_workout(user_id):
     conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("""
-    INSERT INTO "workouts" ("id_user")
-    VALUES
-    (?);
-    """, (user_id,))
-    conn.commit()
-    workout_id = cur.lastrowid
-    conn.close()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+        INSERT INTO "workouts" ("id_user")
+        VALUES
+        (?);
+        """, (user_id,))
+        conn.commit()
+        workout_id = cur.lastrowid
+    finally:
+        conn.close()
     return workout_id
 
 # adiciona um exercicio em um dia de treino
 def create_workout_exercise(workout_id, exercise_id):
     conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("""
-    INSERT INTO "workouts_exercises" ("id_workout", "id_exercise")
-    VALUES
-    (?, ?);
-    """, (workout_id, exercise_id))
-    conn.commit()
-    workout_exercise_id = cur.lastrowid
-    conn.close()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+        INSERT INTO "workouts_exercises" ("id_workout", "id_exercise")
+        VALUES
+        (?, ?);
+        """, (workout_id, exercise_id))
+        conn.commit()
+        workout_exercise_id = cur.lastrowid
+    finally:
+        conn.close()
     return workout_exercise_id
 
 # adiciona na tabela sets 
 def create_set(workout_exercise_id, weight, reps):
     conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("""
-    INSERT INTO "sets" ("id_workout_exercise", "weight", "reps")
-    VALUES
-    (?, ?, ?);
-    """, (workout_exercise_id, weight, reps))
-    conn.commit()
-    conn.close()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+        INSERT INTO "sets" ("id_workout_exercise", "weight", "reps")
+        VALUES
+        (?, ?, ?);
+        """, (workout_exercise_id, weight, reps))
+        conn.commit()
+    finally:
+        conn.close()
     
 # adiciona um user na tabela user
 def create_register(name, password):
