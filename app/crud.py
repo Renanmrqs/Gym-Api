@@ -43,7 +43,7 @@ def get_exercises():
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
-    SELECT "name" FROM "exercises" 
+    SELECT * FROM "exercises" 
     """)
     rows = cur.fetchall()
     return [dict(row) for row in rows]
