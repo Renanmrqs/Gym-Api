@@ -159,13 +159,15 @@ def create_set(workout_exercise_id, weight, reps):
 # adiciona um user na tabela user
 def create_register(name, password):
     conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("""
-    INSERT INTO "users" ("name", "password")
-    VALUES
-    (?, ?);
-    """, (name, password))
-    conn.commit()
-    conn.close()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+        INSERT INTO "users" ("name", "password")
+        VALUES
+        (?, ?);
+        """, (name, password))
+        conn.commit()
+    finally:
+        conn.close()
     
 
