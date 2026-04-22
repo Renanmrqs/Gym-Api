@@ -1,27 +1,27 @@
 CREATE TABLE "users" (
-    "id" INTEGER,
+    "id" bigint GENERATED ALWAYS AS IDENTITY,
     "name" TEXT UNIQUE NOT NULL,
     "password" TEXT NOT NULL,
     PRIMARY KEY("id")
 );
 
 CREATE TABLE "exercises" (
-    "id" INTEGER,
+    "id" bigint GENERATED ALWAYS AS IDENTITY,
     "name" TEXT UNIQUE,
     PRIMARY KEY("id")
 );
 
 
 CREATE TABLE "workouts" (
-    "id" INTEGER,
+    "id" bigint GENERATED ALWAYS AS IDENTITY,
     "id_user" INTEGER,
-    "datetime" NUMERIC DEFAULT CURRENT_TIMESTAMP,
+    "datetime" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY ("id"),
     FOREIGN KEY("id_user") REFERENCES "users"("id")
 );
 
 CREATE TABLE "workouts_exercises" (
-    "id" INTEGER,
+    "id" bigint GENERATED ALWAYS AS IDENTITY,
     "id_workout" INTEGER,
     "id_exercise" INTEGER,
     PRIMARY KEY ("id"),
@@ -31,7 +31,7 @@ CREATE TABLE "workouts_exercises" (
 
 
 CREATE TABLE "sets" (
-"id" INTEGER,
+"id" bigint GENERATED ALWAYS AS IDENTITY,
 "id_workout_exercise" INTEGER,
 "weight" NUMERIC NOT NULL CHECK("weight" != 0),
 "reps" NUMERIC NOT NULL CHECK("reps" != 0),

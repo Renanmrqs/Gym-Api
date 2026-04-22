@@ -1,7 +1,16 @@
-import sqlite3
+import os
+import psycopg2
+from psycopg2.extras import RealDictCursor
+from dotenv import load_dotenv
+
+# Carrega a URL do banco do arquivo .env
+load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_connection():
-    conn = sqlite3.connect('gym.db')    
-    conn.execute("PRAGMA foreign_keys = ON")
-    conn.row_factory = sqlite3.Row
+    # Conecta no Postgres da nuvem (Neon)
+    conn = psycopg2.connect(DATABASE_URL)
+    
+    # Isso aqui faz o Postgres devolver as linhas como dicionários, 
+    # exatamente igual o 'conn.row_factory = sqlite3.Row' fazia!
     return conn

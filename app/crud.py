@@ -20,7 +20,7 @@ def get_users_by_name(name):
     cur = conn.cursor()
     cur.execute(""" 
     SELECT * FROM "users"
-    WHERE name = ?  
+    WHERE name = %s  
     """, (name,)) 
     row = cur.fetchone()
     return dict(row) if row else None
@@ -32,7 +32,7 @@ def get_historic(name_user):
     cur = conn.cursor()
     cur.execute(""" 
     SELECT * FROM "workout_summary"
-    WHERE user = ?
+    WHERE user = %s
     """, (name_user,))
     rows = cur.fetchall()
     return[dict(row) for row in rows]
@@ -55,7 +55,7 @@ def get_exercises_id(id):
     cur = conn.cursor()
     cur.execute("""
     SELECT "name" FROM "exercises" 
-    WHERE id = ?
+    WHERE id = %s
     """, (id,))
     rows = cur.fetchall()
     return [dict(row) for row in rows]
@@ -71,7 +71,7 @@ def get_exercicios_users(name):
     JOIN "users" ON "users"."id" = "workouts"."id_user"
     JOIN 'workouts' ON "workouts"."id" = "workouts_exercises"."id_workout"
     JOIN "exercises" ON "exercises"."id" = "workouts_exercises"."id_exercise"
-    WHERE "users"."name" = ?
+    WHERE "users"."name" = %s
     """, (name,))
     rows = cur.fetchall()
     return [dict(row) for row in rows]
@@ -83,7 +83,7 @@ def get_workouts_by_user(user_id):
     cur = conn.cursor()
     cur.execute("""
     SELECT datetime FROM "workouts"
-    WHERE "id_user" = ?
+    WHERE "id_user" = %s
     """, (user_id,))
     rows = cur.fetchall()
     return [dict(row) for row in rows]
@@ -96,7 +96,7 @@ def get_workout_detail(workout_id):
     SELECT "workouts_exercises"."id", "workouts_exercises"."id_workout", "exercises"."name" 
     FROM "workouts_exercises"
     JOIN "exercises" ON "exercises"."id" = "workouts_exercises"."id_exercise"
-    WHERE "id_workout" = ?
+    WHERE "id_workout" = %s
     """, (workout_id,))
     rows = cur.fetchall()
     return [dict(row) for row in rows]
@@ -111,7 +111,7 @@ def create_exercise(name):
         cur.execute("""
         INSERT INTO "exercises" ("name")
         VALUES
-        (?);
+        (%s);
         """, (name,))
         conn.commit()
     finally:
@@ -126,7 +126,7 @@ def create_workout(user_id):
         cur.execute("""
         INSERT INTO "workouts" ("id_user")
         VALUES
-        (?);
+        (%s);
         """, (user_id,))
         conn.commit()
         workout_id = cur.lastrowid
@@ -142,7 +142,7 @@ def create_workout_exercise(workout_id, exercise_id):
         cur.execute("""
         INSERT INTO "workouts_exercises" ("id_workout", "id_exercise")
         VALUES
-        (?, ?);
+        (%s, %s);
         """, (workout_id, exercise_id))
         conn.commit()
         workout_exercise_id = cur.lastrowid
@@ -158,7 +158,7 @@ def create_set(workout_exercise_id, weight, reps):
         cur.execute("""
         INSERT INTO "sets" ("id_workout_exercise", "weight", "reps")
         VALUES
-        (?, ?, ?);
+        (%s, %s, %s);
         """, (workout_exercise_id, weight, reps))
         conn.commit()
     finally:
@@ -172,7 +172,7 @@ def create_register(name, password):
         cur.execute("""
         INSERT INTO "users" ("name", "password")
         VALUES
-        (?, ?);
+        (%s, %s);
         """, (name, password))
         conn.commit()
     finally:
