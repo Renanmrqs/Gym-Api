@@ -32,28 +32,29 @@ with open("seed.sql", 'r') as f:
 
 cursor = connect.cursor()
 cursor.execute(seed)
-connect.commit()
+
 
 
 ### migrando login dos users
 def migrate_users():
     conn = get_connection()
-    # 1. Abre o cursor pedindo para devolver como dicionário
     cur = conn.cursor(cursor_factory=RealDictCursor)
     
-    # 2. Roda a query (não precisa de 'users = ' antes)
     cur.execute('SELECT * FROM "users";')
     
-    # 3. Pega os resultados (já vai vir como uma lista de dicionários!)
     users = cur.fetchall()
     print(users)
     
     for user in users:
-        senha_atual = pwd_context.hash(user["password"])
+        hased_password = pwd_context.hash(user["password"])
         cur.execute("""
         UPDATE "users" SET password = %s 
         WHERE id = %s;            
-        """, (senha_atual, user["id"]))
+        """, (hased_password, user["id"]))
+    
+    conn.commit()
+    cur.close()
+    conn.close()
 
 migrate_users()
 cursor.close()

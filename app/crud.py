@@ -1,70 +1,68 @@
 from app.database import get_connection
-from app.auth import pwd_context
-
+from psycopg2.extras import RealDictCursor
 # READS:
 
 # busca todos usuarios e id cadastrado
 
 def get_users():
     conn = get_connection()
-    cur = conn.cursor()
-    cur.execute(""" 
-    SELECT * FROM "users"
-    """) 
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    
+    cur.execute('SELECT * FROM "users"') 
     rows = cur.fetchall()
-    return[dict(row) for row in rows]
+    return rows
 
 # busca usuario especifico atraves do nome
 def get_users_by_name(name):
     conn = get_connection()
-    cur = conn.cursor()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute(""" 
     SELECT * FROM "users"
     WHERE name = %s  
     """, (name,)) 
     row = cur.fetchone()
-    return dict(row) if row else None
+    return row
 
 
 # buscar o historico pelo nome do usuario
 def get_historic(name_user):
     conn = get_connection()
-    cur = conn.cursor()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute(""" 
     SELECT * FROM "workout_summary"
     WHERE user = %s
     """, (name_user,))
     rows = cur.fetchall()
-    return[dict(row) for row in rows]
+    return rows
 
 
 # busca todos os exercicios
 def get_exercises():
     conn = get_connection()
-    cur = conn.cursor()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute("""
     SELECT * FROM "exercises" 
     """)
     rows = cur.fetchall()
-    return [dict(row) for row in rows]
+    return rows
 
 # busca exercicio filtrando por id
 
 def get_exercises_id(id):
     conn = get_connection()
-    cur = conn.cursor()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute("""
     SELECT "name" FROM "exercises" 
     WHERE id = %s
     """, (id,))
     rows = cur.fetchall()
-    return [dict(row) for row in rows]
+    return rows
 
 # treinos de um ususario com data
 
 def get_exercicios_users(name):
     conn = get_connection()
-    cur = conn.cursor()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute("""
     SELECT "users"."name", "exercises"."name", "workouts"."datetime" 
     FROM workouts_exercises
@@ -74,24 +72,24 @@ def get_exercicios_users(name):
     WHERE "users"."name" = %s
     """, (name,))
     rows = cur.fetchall()
-    return [dict(row) for row in rows]
+    return rows
 
 
 # busca treinos filtrando por usuario
 def get_workouts_by_user(user_id): 
     conn = get_connection()
-    cur = conn.cursor()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute("""
     SELECT datetime FROM "workouts"
     WHERE "id_user" = %s
     """, (user_id,))
     rows = cur.fetchall()
-    return [dict(row) for row in rows]
+    return rows
 
 # busca exercicio filtrando por id de treino
 def get_workout_detail(workout_id):
     conn = get_connection()
-    cur = conn.cursor()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute("""
     SELECT "workouts_exercises"."id", "workouts_exercises"."id_workout", "exercises"."name" 
     FROM "workouts_exercises"
@@ -99,7 +97,7 @@ def get_workout_detail(workout_id):
     WHERE "id_workout" = %s
     """, (workout_id,))
     rows = cur.fetchall()
-    return [dict(row) for row in rows]
+    return rows
 
 #CREATES:
 
