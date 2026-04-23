@@ -19,7 +19,7 @@ Estudando CS50 SQL e aplicando na prática.
 - models.py — schemas Pydantic
 - crud.py — funções de leitura e inserção no banco
 - Rotas FastAPI (autenticação, exercises, workouts, sets)
-- Deploy automatizado no Railway (utilizando variáveis de ambiente)
+- Deploy automatizado no Render (utilizando variáveis de ambiente)
 - Testes com pytest
 
 ## Próximos passos
@@ -53,4 +53,4 @@ Estudando CS50 SQL e aplicando na prática.
 ## API online
 
 ## API online
-🔗 https://web-production-7fb8d2.up.railway.app/docs
+🔗 [https://web-production-7fb8d2.up.railway.app/docs](https://gym-api-08pc.onrender.com/docs)
