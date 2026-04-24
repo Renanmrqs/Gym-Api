@@ -1,5 +1,6 @@
 from sqlalchemy import String, Integer, Column, ForeignKey, DateTime, func
 from sqlalchemy.orm import declarative_base
+from pydantic import BaseModel
 
 # MODELO BASE USANDO ORM E SQLALCHEMY
 Base = declarative_base()
@@ -26,7 +27,12 @@ class Workouts(Base):
     id_user = Column(Integer, ForeignKey("users.id"), nullable=False)
     datetime = Column(DateTime(), server_default=func.now())
 
+##
+# modelo de registrar usuario
 
+class RegisterRequest(BaseModel):
+    name: str
+    password: str
 
 
 ############CLASSES ANTIGAS ABAIXO

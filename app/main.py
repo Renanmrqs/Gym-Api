@@ -46,9 +46,7 @@ app.include_router(users.router)
 #     return result
 
 # # faz a rota de puxar tudo da tabela usuarios 
-# @app.get("/users")
-# def read_users():
-#     return get_users()
+
 
 # # CREATES
 
