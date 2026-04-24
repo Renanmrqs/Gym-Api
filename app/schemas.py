@@ -1,5 +1,5 @@
 from sqlalchemy import String, Integer, Column, ForeignKey, DateTime, func
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationships
 
 # MODELO BASE USANDO ORM E SQLALCHEMY
 Base = declarative_base()
@@ -42,3 +42,5 @@ class Sets(Base):
     id_workout_exercise = Column(Integer, ForeignKey("workouts_exercises.id"), nullable=False)
     weight = Column(Integer, nullable=False)
     reps = Column(Integer, nullable=False)
+    
+

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 # , exceptions, HTTPException, security, Depends
-from app.routers import exercises, users
+from app.routers import exercises, users, workouts
 # 
 
 
@@ -8,6 +8,7 @@ app = FastAPI()
 
 app.include_router(exercises.router)
 app.include_router(users.router)
+app.include_router(workouts.router)
 
 
 # READS

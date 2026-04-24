@@ -1,5 +1,6 @@
-from app.schemas import Users
+from app.schemas import Workouts, WorkoutsExercises, Sets
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 
 
 
@@ -7,6 +8,14 @@ from sqlalchemy.orm import Session
 ##
 # ROTAS A REFATORAR
 # # buscar o historico pelo nome do usuario
+
+def get_historic(db: Session, name_user: str):
+    result = db.execute(
+        text('SELECT * FROM workout_summary WHERE "user" = :name'),
+        {"name": name_user}
+    )
+    return result.mappings().all()
+
 # def get_historic(name_user):
 #     conn = get_connection()
 #     cur = conn.cursor(cursor_factory=RealDictCursor)

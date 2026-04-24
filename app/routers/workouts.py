@@ -1,3 +1,12 @@
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from app.database import get_db
+from app.crud.workouts import get_historic
+from sqlalchemy.exc import IntegrityError
+from app.routers.users import get_current_user
+
+router = APIRouter()
+
 # # cria a rota de puxa o treino de acordo com o id de treino 
 # @app.get("/workout_detail_w_workout/{id_workout}")
 # def read_workout_detail_workout(id_workout: int):
@@ -10,6 +19,13 @@
 
 
 # # faz a rota de puxar o historico de sets completo com o nome
+@router.get("/history/{name_user}")
+def read_history_sets_by_user(name_user: str, db: Session = Depends(get_db)):
+    result = get_historic(db, name_user)
+    if not result:
+        raise HTTPException(status_code=400, detail=f'{name_user} not in table')
+    return result
+
 # @app.get("/history/{name_user}")
 # def read_history_sets_by_user(name_user: str):
 #     result = get_historic(name_user)
