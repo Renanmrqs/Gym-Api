@@ -1,16 +1,14 @@
 from fastapi import FastAPI
 # , exceptions, HTTPException, security, Depends
-from app.routers import exercises
-# from app.auth import pwd_context, generate_token, verify_token
+from app.routers import exercises, users
+# 
 
 
 app = FastAPI()
-app.include_router(exercises.router)
 
-# security_rote = security.OAuth2PasswordBearer(tokenUrl="login")
-# def get_current_user(token: str = Depends(security_rote)):
-#     user  = verify_token(token)
-#     return user
+app.include_router(exercises.router)
+app.include_router(users.router)
+
 
 # # READS
 # # cria a rota padrao
@@ -25,10 +23,7 @@ app.include_router(exercises.router)
 # def read_exercises():
 #     return get_exercises()
 
-# # cria a rota de puxar exercicio por id
-# @app.get("/exercises/{id}")
-# def read_exercises_detail(id: int):
-#     return get_exercises_id(id)
+
 
 
 # # cria a rota de puxa o treino de acordo com o id de treino 
@@ -56,14 +51,7 @@ app.include_router(exercises.router)
 #     return get_users()
 
 # # CREATES
-# # faz a rota de adicionar exercicio na tabela exercicios
-# @app.post("/exercises")
-# def post_exercise(exercise: ExerciseCreate, user: str = Depends(get_current_user)):
-#     try:
-#         create_exercise(exercise.name)
-#         return {"message": f"exercise {exercise.name} Created by {user}"}
-#     except sqlite3.IntegrityError:
-#         raise HTTPException(status_code=400, detail=f"{exercise.name} already in the table")
+
 
 # # faz a rota de criar treino 
 # @app.post("/workout")
@@ -93,31 +81,5 @@ app.include_router(exercises.router)
 #         raise HTTPException(status_code=400, detail=f'{sets.id_workout_exercise} not in the table')
 
 
-# #####registro de usuario
-# ##faz a rota de criar o registro    
-# @app.post("/register")
-# def post_register(register: LoginRequest):
-#     try:
-#         password_criptografed = pwd_context.hash(register.password)
 
-#         create_register(register.name, password_criptografed)
-        
-#         return {"message": f"user {register.name} registred"}
-#     except sqlite3.IntegrityError:
-#         raise HTTPException(status_code=400, detail=f'{register.name} already in table')
-
-# # faz rota do usuario logar na aplicacao
-# @app.post("/login")
-# def post_login(form_data: security.OAuth2PasswordRequestForm = Depends()):
-#     login_return = get_users_by_name(form_data.username)
-#     if not login_return:
-#         raise exceptions.HTTPException(status_code=400, detail=f'{form_data.username} is not registred')
-    
-#     password_corrrect = pwd_context.verify(form_data.password, login_return["password"])
-#     if password_corrrect == False:
-#         raise exceptions.HTTPException(status_code=400, detail=f'incorrect password, try again.')
-    
-#     token = generate_token(form_data.username)
-    
-#     return {"access_token": token, "token_type": "bearer", "user_id": login_return['id']}
 
