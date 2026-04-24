@@ -1,4 +1,4 @@
-from app.models import Exercise
+from app.schemas import Exercise
 from sqlalchemy.orm import Session
 from sqlalchemy import select, insert
 ## TABELAS A FAZER EXERCISES

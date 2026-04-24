@@ -1,6 +1,5 @@
-from app.models import Users
+from app.schemas import Users
 from sqlalchemy.orm import Session
-from sqlalchemy import select
 
 
 # ROTAS A REFATORAR
