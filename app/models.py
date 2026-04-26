@@ -1,34 +1,15 @@
 from pydantic import BaseModel
 
-# base: o que é comum em todos os casos DB EXERCISES
-class ExerciseBase(BaseModel):
-    name: str
-
-# criação: só o que o usuário manda (herda do base)
-class ExerciseCreate(ExerciseBase):
-    pass
-
-# resposta: inclui o id que o banco gerou (herda do base)
-class Exercise(ExerciseBase):
-    id: int
-
-# DB USERS
-
-class UsersBase(BaseModel):
-    name: str
-    password: str
-class UsersCreate(UsersBase):
-    pass
-
-class Users(UsersBase):
-    id: int
 
 
-class LoginRequest(BaseModel):
+##
+# modelo de registrar usuario
+
+class RegisterRequest(BaseModel):
     name: str
     password: str
 
-# DB WORKOUTS
+## modelo de registrar exercicios
 
 class WorkoutsBase(BaseModel):
     id_user: int
@@ -51,7 +32,7 @@ class WorkoutsExercisesCreate(WorkoutsExercisesBase):
 
 class WorkoutsExercises(WorkoutsExercisesBase):
     id: int
-    
+
 # DB SETS
 
 class SetsBase(BaseModel):
