@@ -34,10 +34,6 @@ def post_register(register: RegisterRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail=f'{register.name} already in table')
 
 
-
-
-
-
 # faz rota do usuario logar na aplicacao
 @router.post("/login")
 def post_login(form_data: security.OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):

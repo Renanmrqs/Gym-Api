@@ -18,8 +18,6 @@ def read_exercises(db: Session = Depends(get_db)):
 def read_exercises_detail(id: int, db: Session = Depends(get_db)):
     return get_exercises_id(id, db)
 
-##
-
 
 # faz a rota de adicionar exercicio na tabela exercicios
 @router.post("/exercises")

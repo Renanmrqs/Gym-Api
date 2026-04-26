@@ -9,12 +9,10 @@ def get_users(db: Session):
 
 
 
-
 # busca user pelo nome
 def get_users_by_name(name, db: Session):
     user = db.query(Users).filter(Users.name == name).first()
     return user
-
 
 
 # adiciona um user na tabela user
