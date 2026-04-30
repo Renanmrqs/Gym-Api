@@ -35,7 +35,7 @@ def read_history_sets_by_user(name_user: str, db: Session = Depends(get_db)):
 def post_workout(workout: WorkoutCreate, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         workout_id = create_workout(db, workout.id_user)
-        return {"message": "Workout Created", "id": workout_id}
+        return {"message": "Workout Created", "data": workout_id}
     except IntegrityError:
         raise HTTPException(status_code=400, detail=f'{workout.id_user} not in the table')
 
@@ -48,7 +48,7 @@ def post_workout(workout: WorkoutCreate, user: str = Depends(get_current_user), 
 def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         workout_exercise_id = create_workout_exercise(db, workout_exercise.id_workout, workout_exercise.id_exercise)
-        return {"message": "Exercise added in workout", "id": workout_exercise_id}
+        return {"message": "Exercise added in workout", "data": workout_exercise_id}
     except IntegrityError:
         raise HTTPException(status_code=400, detail="Workout or Exercise ID not found, or already added.")
 
