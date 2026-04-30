@@ -67,6 +67,6 @@ Schema relacional com 5 tabelas — `users`, `exercises`, `workouts`, `workouts_
 
 ## Próximos passos
 
-- Alembic para versionamento de migrations
-- Testes automatizados com pytest
-- Melhorar Integração com o [Gym App](https://github.com/Renanmrqs/Gym-App) — front-end em Streamlit
+- [✅] Alembic para versionamento de migrations
+- [] Testes automatizados com pytest
+- [] Melhorar Integração com o [Gym App](https://github.com/Renanmrqs/Gym-App) — front-end em Streamlit
