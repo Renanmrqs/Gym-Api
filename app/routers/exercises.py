@@ -9,13 +9,13 @@ from app.routers.users import get_current_user
 router = APIRouter()
 
 @router.get("/exercises")
-def read_exercises(db: Session = Depends(get_db)):
+def read_exercises(db: Session = Depends(get_db), user: str = Depends(get_current_user)):
     return get_exercises(db)
 
 
 # buscando exercicio pelo id
 @router.get("/exercises/{id}")
-def read_exercises_detail(id: int, db: Session = Depends(get_db)):
+def read_exercises_detail(id: int, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     return get_exercises_id(id, db)
 
 

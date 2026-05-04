@@ -1,22 +1,31 @@
-from fastapi import APIRouter, Depends, HTTPException, security, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, security, HTTPException, status
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.auth import pwd_context, generate_token, verify_token
 from app.crud.users import get_users_by_name, get_users, create_register
+from app.crud.tokens import read_tokens
 from sqlalchemy.exc import IntegrityError
 from app.models import RegisterRequest
 
 # verificações de login
 router = APIRouter()
 security_rote = security.OAuth2PasswordBearer(tokenUrl="login")
-def get_current_user(token: str = Depends(security_rote)):
-    user  = verify_token(token)
-    return user
+def get_current_user(db: Session = Depends(get_db), token: str = Depends(security_rote)):
+    blacklist = read_tokens(db, token)
+    if not blacklist:
+        user  = verify_token(token)
+        return user
+    raise HTTPException(status_code=401, detail='token expirid')
+
+def get_current_token(token: str = Depends(security_rote)):
+    return token
+
 
 ###
 # rota de puxar todos os usuarios
 @router.get("/users")
-def read_all_users(db: Session = Depends(get_db)):
+def read_all_users(db: Session = Depends(get_db), user: str = Depends(get_current_user)):
     return get_users(db)
 
 

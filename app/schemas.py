@@ -51,3 +51,7 @@ class Sets(Base):
     reps = Column(Integer, nullable=False)
     
 
+class Tokens(Base):
+    __tablename__ = 'expired_tokens'
+    id = Column(BigInteger, primary_key=True)
+    token = Column(Text, nullable=False, unique=True)

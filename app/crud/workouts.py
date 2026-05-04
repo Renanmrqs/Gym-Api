@@ -1,4 +1,4 @@
-from app.schemas import Workouts, WorkoutsExercises, Sets, Users
+from app.schemas import Workouts, WorkoutsExercises, Sets
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 

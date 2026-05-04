@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 
-
+## modelo de registrar tokens
+class RegisterToken(BaseModel):  
+    token: str
 
 ##
 # modelo de registrar usuario

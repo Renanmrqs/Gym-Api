@@ -10,19 +10,19 @@ router = APIRouter()
 
 # # cria a rota de puxa o treino de acordo com o id de treino 
 @router.get("/workout_detail_w_workout/{id_workout}")
-def read_workout_detail_workout(id_workout: int, db: Session = Depends(get_db)):
+def read_workout_detail_workout(id_workout: int, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     return get_workout_detail_by_workout(db, id_workout)
 
 
 # # cria a rota de puxa o treino de acordo com o id do user
 @router.get("/workout_detail_w_user/{id_user}")
-def read_workout_detail_user(id_user: int, db: Session = Depends(get_db)):
+def read_workout_detail_user(id_user: int, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     return get_workouts_by_user(db, id_user)
 
 
 # # faz a rota de puxar o historico de sets completo com o nome
 @router.get("/history/{name_user}")
-def read_history_sets_by_user(name_user: str, db: Session = Depends(get_db)):
+def read_history_sets_by_user(name_user: str, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     result = get_historic(db, name_user)
     if not result:
         raise HTTPException(status_code=400, detail=f'{name_user} not in table')
