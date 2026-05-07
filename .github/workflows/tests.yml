@@ -11,8 +11,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r requirements.txt
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - run: pytest
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
