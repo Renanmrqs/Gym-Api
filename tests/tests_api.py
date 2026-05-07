@@ -54,7 +54,7 @@ def test_register():
     response = client.post('/register', json=data)
     assert response.status_code in [200, 400]
     
-def login():
+def test_login():
     form_data = {'username': nome, 'password': 'teste1234'}
     response = client.post('/login', data=form_data)
     assert response.status_code in [200, 400]
@@ -64,26 +64,29 @@ def login():
 def test_post_exercise(head):
     data = {'exercise': 'Rosca martelo'}
     response =  client.post(f'/exercises', params=data, headers=head) 
-    assert response.status_code in [200, 400]
+    assert response.status_code == 200
+    assert 'message' in response.json()
 
 def test_post_workout(id_user, head):
     data = {'id_user': id_user}
     response =  client.post(f'/workout', json=data, headers=head) 
-    assert response.status_code in [200, 400]
+    assert response.status_code == 200
+    assert 'id' in response.json()['data']
 
 def test_post_workout_exercise(id_workout, id_exercise, head):
     data = {'id_workout': id_workout, 'id_exercise': id_exercise}
     response =  client.post(f'/workout_exercise', json=data, headers=head) 
-    assert response.status_code in [200, 400]
+    assert response.status_code == 200
+    assert  'id' in response.json()['data']
 
-
-def test_sets(id_workout_exercise, head):
+def test_post_sets(id_workout_exercise, head):
     weight = random.randint(1, 50)
     reps = random.randint(5, 12)
     data = {'weight': weight, 'reps': reps, 'id_workout_exercise': id_workout_exercise}
-    
     response = client.post(f'/sets', json=data, headers=head) 
-    assert response.status_code in [200, 400]
+    
+    assert response.status_code == 200 
+    assert  'message' in response.json()
 
 
 
