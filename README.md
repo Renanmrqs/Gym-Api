@@ -23,14 +23,17 @@ app/
 │   ├── exercises.py
 │   ├── users.py
 │   └── workouts.py
+│   ├── tokens.py
 ├── routers/         # rotas separadas por recurso
 │   ├── exercises.py
+│   ├── tokens.py
 │   ├── users.py
 │   └── workouts.py
 ├── auth.py          # lógica de autenticação JWT
 ├── database.py      # conexão e sessão SQLAlchemy
 ├── models.py        # modelos ORM (tabelas)
 └── schemas.py       # schemas Pydantic (validação)
+alembic/             # versionamento de migrations
 
 ---
 
@@ -69,5 +72,6 @@ Schema relacional com 5 tabelas — `users`, `exercises`, `workouts`, `workouts_
 
 - [✅] Alembic para versionamento de migrations
 - [✅] Sistema de logout completo
-- [] Testes automatizados com pytest
+- [✅] Testes automatizados com pytest
+- [✅] Containerização com Docker
 - [] Melhorar Integração com o [Gym App](https://github.com/Renanmrqs/Gym-App) 
