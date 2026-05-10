@@ -3,25 +3,25 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.crud.workouts import get_historic, get_workouts_by_user, get_workout_detail_by_workout, create_workout, create_workout_exercise, create_set
 from sqlalchemy.exc import IntegrityError
-from app.routers.users import get_current_user
+from app.routers.auth import get_current_user
 from app.models import WorkoutCreate, WorkoutsExercisesCreate, SetsCreate
 
 router = APIRouter()
 
 # # cria a rota de puxa o treino de acordo com o id de treino 
-@router.get("/workout_detail_w_workout/{id_workout}")
+@router.get("/workout_detail_w_workout/{id_workout}", tags=['workouts'])
 def read_workout_detail_workout(id_workout: int, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     return get_workout_detail_by_workout(db, id_workout)
 
 
 # # cria a rota de puxa o treino de acordo com o id do user
-@router.get("/workout_detail_w_user/{id_user}")
+@router.get("/workout_detail_w_user/{id_user}", tags=['workouts'])
 def read_workout_detail_user(id_user: int, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     return get_workouts_by_user(db, id_user)
 
 
 # # faz a rota de puxar o historico de sets completo com o nome
-@router.get("/history/{name_user}")
+@router.get("/history/{name_user}", tags=['workouts'])
 def read_history_sets_by_user(name_user: str, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     result = get_historic(db, name_user)
     if not result:
@@ -31,7 +31,7 @@ def read_history_sets_by_user(name_user: str, user: str = Depends(get_current_us
 
 # # CREATES
 # # faz a rota de criar treino 
-@router.post("/workout")
+@router.post("/workout", tags=['workouts'])
 def post_workout(workout: WorkoutCreate, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         workout_id = create_workout(db, workout.id_user)
@@ -44,7 +44,7 @@ def post_workout(workout: WorkoutCreate, user: str = Depends(get_current_user), 
 
 
 # # faz a rota de adicionar exercicio no treino
-@router.post("/workout_exercise")
+@router.post("/workout_exercise", tags=['workouts'])
 def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         workout_exercise_id = create_workout_exercise(db, workout_exercise.id_workout, workout_exercise.id_exercise)
@@ -56,7 +56,7 @@ def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate, user
 
 
 # # faz a rota de registrar a série
-@router.post("/sets")
+@router.post("/sets", tags=['workouts'])
 def post_sets(sets: SetsCreate, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         create_set(db, sets.id_workout_exercise, sets.weight, sets.reps)

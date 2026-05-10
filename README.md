@@ -18,22 +18,23 @@ API REST para registro e acompanhamento de treinos — evolução do [Gym Regist
 
 ## Arquitetura
 
+
+```
 app/
 ├── crud/            # operações no banco separadas por recurso
+│   ├── auth.py
 │   ├── exercises.py
-│   ├── users.py
 │   └── workouts.py
-│   ├── tokens.py
 ├── routers/         # rotas separadas por recurso
+│   ├── auth.py
 │   ├── exercises.py
-│   ├── tokens.py
-│   ├── users.py
 │   └── workouts.py
 ├── auth.py          # lógica de autenticação JWT
 ├── database.py      # conexão e sessão SQLAlchemy
 ├── models.py        # modelos ORM (tabelas)
 └── schemas.py       # schemas Pydantic (validação)
 alembic/             # versionamento de migrations
+```
 
 ---
 
@@ -42,6 +43,8 @@ alembic/             # versionamento de migrations
 **Autenticação:**
 - `POST /register`
 - `POST /login`
+- `POST /logout` 🔒
+- `GET /users` 🔒
 
 **Exercises:**
 - `GET /exercises`

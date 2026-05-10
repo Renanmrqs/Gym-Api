@@ -1,14 +1,13 @@
 from fastapi import FastAPI
-from app.routers import exercises, users, workouts, tokens
+from app.routers import exercises, auth, workouts
 
 app = FastAPI()
 
 app.include_router(exercises.router)
-app.include_router(users.router)
+app.include_router(auth.router)
 app.include_router(workouts.router)
-app.include_router(tokens.router)
 
-@app.get("/health")
+@app.get("/health", tags=['health'])
 def health():
     return {"status": "ok"}
 

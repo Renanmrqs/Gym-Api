@@ -1,8 +1,18 @@
 from app.schemas import Users
+from app.schemas import Tokens
 from sqlalchemy.orm import Session
 
+def add_token(db: Session, token: str):
+    token_created = Tokens(token=token)
+    db.add(token_created)
+    db.commit()
+    db.refresh(token_created)
+    return token_created
 
-# ROTAS A REFATORAR
+def read_tokens(db: Session, token):
+    return db.query(Tokens).where(Tokens.token == token).all()
+
+
 # PEGAR TODOS USERS
 def get_users(db: Session):
     return db.query(Users).all()
@@ -22,5 +32,3 @@ def create_register(db: Session, name, password):
     db.commit()
     db.refresh(user)
     return user
-    
-        
