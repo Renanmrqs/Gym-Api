@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.crud.workouts import get_historic, get_workouts_by_user, get_workout_detail_by_workout, create_workout, create_workout_exercise, create_set
+from app.crud.workouts import get_historic, get_workouts_by_user, get_workout_detail_by_workout, create_workout, create_workout_exercise, create_set, get_max_weight_for_user_exercise
+from app.crud.exercises import get_exercises_id
 from sqlalchemy.exc import IntegrityError
 from app.routers.auth import get_current_user
 from app.models import WorkoutCreate, WorkoutsExercisesCreate, SetsCreate
@@ -29,6 +30,14 @@ def read_history_sets_by_user(name_user: str, user: str = Depends(get_current_us
     return result
 
 
+@router.get("/max_exercise_user/{exercise_user}", tags=['workouts'])
+def read_max_exercise_user(exercise_user: str, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+    result = get_max_weight_for_user_exercise(db, user, exercise_user)
+    if result is None:
+        raise HTTPException(status_code=400, detail=f'{exercise_user} not registred')
+    return result
+
+
 # # CREATES
 # # faz a rota de criar treino 
 @router.post("/workout", tags=['workouts'])
@@ -52,15 +61,28 @@ def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate, user
     except IntegrityError:
         raise HTTPException(status_code=400, detail="Workout or Exercise ID not found, or already added.")
 
+####
+#####
+####
 
-
+def pr(id_exercise, user, db, weight_new):
+    name_exercise = get_exercises_id(id_exercise, db)
+    print(name_exercise)
+    historic_weight = read_max_exercise_user(name_exercise[0].name, user, db)
+    if weight_new > historic_weight:
+        return True
+    else:
+        return False
 
 # # faz a rota de registrar a série
 @router.post("/sets", tags=['workouts'])
 def post_sets(sets: SetsCreate, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
+        pr_user = pr(sets.id_workout_exercise, user, db, sets.weight)
         create_set(db, sets.id_workout_exercise, sets.weight, sets.reps)
-        return {"message": f"Exercise add weight: {sets.weight} | reps: {sets.reps}"}
+        return {"message": f"Exercise add weight: {sets.weight} | reps: {sets.reps}", "pr": pr_user}
     except IntegrityError:
         raise HTTPException(status_code=400, detail=f'{sets.id_workout_exercise} not in the table')
+
+
 

@@ -24,6 +24,21 @@ def get_workout_detail_by_workout(db: Session, workout_id):
     return db.query(WorkoutsExercises).filter(WorkoutsExercises.id_workout == workout_id).all()
 
 
+
+
+
+# # busca o maior peso já registrado por exercício por usuário
+#
+
+def get_max_weight_for_user_exercise(db: Session, name_user: str, exercise_user: str):
+    result = db.execute(
+        text('SELECT MAX("weight") FROM workout_summary WHERE "user" = :name AND "exercise" = :exercise_user '),
+        {"name": name_user, "exercise_user": exercise_user}
+    )
+    row = result.mappings().one()
+    return float(row["max"]) if row["max"] is not None else None
+
+
 # #CREATES:
 
 #cria um dia de treino 
@@ -50,5 +65,3 @@ def create_set(db: Session, workout_exercise_id, weight, reps):
     db.refresh(result)
     return result
 
-
-    
