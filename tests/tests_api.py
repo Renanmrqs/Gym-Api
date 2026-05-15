@@ -86,7 +86,7 @@ def test_post_sets(id_workout_exercise, head):
     response = client.post(f'/sets', json=data, headers=head) 
     
     assert response.status_code == 200 
-    assert  'message' in response.json()
+    assert  'message' and 'pr' in response.json()
 
 
 

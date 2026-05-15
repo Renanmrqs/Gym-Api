@@ -6,6 +6,7 @@ from app.crud.exercises import get_exercises_id
 from sqlalchemy.exc import IntegrityError
 from app.routers.auth import get_current_user
 from app.models import WorkoutCreate, WorkoutsExercisesCreate, SetsCreate
+from app.ws.manager import manager
 
 router = APIRouter()
 
@@ -67,8 +68,12 @@ def post_add_exercise_in_workout(workout_exercise: WorkoutsExercisesCreate, user
 
 def pr(id_exercise, user, db, weight_new):
     name_exercise = get_exercises_id(id_exercise, db)
-    print(name_exercise)
+    if not name_exercise:
+        return False
     historic_weight = read_max_exercise_user(name_exercise[0].name, user, db)
+    if historic_weight is None:
+        return False
+    
     if weight_new > historic_weight:
         return True
     else:
@@ -76,9 +81,12 @@ def pr(id_exercise, user, db, weight_new):
 
 # # faz a rota de registrar a série
 @router.post("/sets", tags=['workouts'])
-def post_sets(sets: SetsCreate, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+async def post_sets(sets: SetsCreate, user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+
     try:
         pr_user = pr(sets.id_workout_exercise, user, db, sets.weight)
+        if pr_user:
+            await manager.send_personal_message("Parabens! voce bateu seu pr!", user)
         create_set(db, sets.id_workout_exercise, sets.weight, sets.reps)
         return {"message": f"Exercise add weight: {sets.weight} | reps: {sets.reps}", "pr": pr_user}
     except IntegrityError:
