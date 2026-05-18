@@ -4,7 +4,7 @@ from app.ws import websocket
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-
+# afa
 origins = [
     "http://localhost:3000",
     "https://gym-api-08pc.onrender.com/",
