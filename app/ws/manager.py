@@ -19,6 +19,8 @@ class ConnectionManager():
             await self.active_connections[username].send_text(message)
 
     async def send_personal_message(self, message, username):
+        print(f"Tentando enviar pra: {username}")
+        print(f"Conexões ativas: {self.active_connections.keys()}")
         if username in self.active_connections:
                 await self.active_connections[username].send_text(message)
             
