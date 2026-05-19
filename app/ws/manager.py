@@ -12,7 +12,7 @@ class ConnectionManager():
 
     
     def disconnect(self, websocket: WebSocket, username):
-        self.active_connections[username].pop(username)
+        self.active_connections.pop(username)
 
     async def broadcast(self, message, username):
         if username in self.active_connections:
